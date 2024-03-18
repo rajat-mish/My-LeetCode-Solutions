@@ -11,16 +11,33 @@
  */
 class Solution {
 public:
-void helper(TreeNode*root,vector<int>&v){
-    if(root==NULL)return;
-  
-    helper(root->left,v);
-      v.push_back(root->val);
-    helper(root->right,v);
-}
     vector<int> inorderTraversal(TreeNode* root) {
-         vector<int>v;
-        helper(root,v);
+        //Morris traversal :- uses no extra space O(1)
+        vector<int>v;
+        TreeNode*cur=root;
+        while(cur){
+            if(cur->left!=NULL){
+                //find predecessor
+                TreeNode*pred=cur->left;
+                while(pred->right!=NULL && pred->right!=cur){
+                    pred=pred->right;
+                }
+               if(pred->right==NULL){ //link
+                pred->right=cur;
+                cur=cur->left;
+               }
+               else{
+                // unlink
+                pred->right=NULL;
+                v.push_back(cur->val);
+                cur=cur->right;
+               }
+            }
+            else{
+                v.push_back(cur->val);
+                cur=cur->right;
+            }
+        }
         return v;
     }
 };
