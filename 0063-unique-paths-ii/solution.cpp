@@ -1,72 +1,26 @@
-// class Solution {
-// public:
-//     int uniquePathsWithObstacles(vector<vector<int>>& arr) {
-//         int m=arr.size();
-//         int n=arr[0].size();
-//         int dp[m][n];
-
-//         for(int i=0;i<m;i++){
-//             for(int j=0;j<n;j++){
-//                 if((i==0 || j==0)&&(arr[i][j]!=1)){
-//                     dp[i][j]=1;
-
-//                 }
-//                 if(arr[i][j]==1){
-//                     dp[i][j]=0;
-//                 }
-//                 else{
-//                    dp[i][j]=dp[i-1][j]+dp[i][j-1];
-//                 }
-//             }
-//         }
-//         return dp[m-1][n-1];
-//     }
-// };
-
-
-
-
-
-
-
-
 class Solution {
 public:
-    int uniquePathsWithObstacles(vector<vector<int>>& arr) {
-        int m = arr.size();
-        int n = arr[0].size();
-        vector<vector<int>> dp(m, vector<int>(n, 0));
+vector<vector<int>>grid;
 
-        // Initialize the first cell
-        if (arr[0][0] == 0) {
-            dp[0][0] = 1;
-        }
+int n,m;
+vector<vector<int>>dp;
+ int fun(int i,int j){
+    
+    if(i==n-1 && j==m-1)return 1;
+    if(i<0 || j<0 || i>=n || j>=m)return 0;
+    if(grid[i][j]==1)return 0;
+    if(dp[i][j]!=-1)return dp[i][j];
+    return dp[i][j]= fun(i,j+1)+fun(i+1,j);
 
-        // Initialize the first column
-        for (int i = 1; i < m; i++) {
-            if (arr[i][0] == 0) {
-                dp[i][0] = dp[i-1][0];
-              
-            }
-        }
-
-        // Initialize the first row
-        for (int j = 1; j < n; j++) {
-            if (arr[0][j] == 0) {
-                dp[0][j] = dp[0][j-1];
-            }
-        }
-
-        // Fill the dp table
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                if (arr[i][j] == 0) {
-                    dp[i][j] = dp[i-1][j] + dp[i][j-1];
-                }
-            }
-        }
-
-        return dp[m-1][n-1];
+ }
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        grid=obstacleGrid;
+        n=grid.size();
+        m=grid[0].size();
+        dp.clear();
+        dp.resize(100,vector<int>(100,-1));
+        
+        if(grid[n-1][m-1]==1)return 0;
+        return fun(0,0);
     }
 };
-
