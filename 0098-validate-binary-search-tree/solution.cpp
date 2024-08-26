@@ -11,22 +11,21 @@
  */
 class Solution {
 public:
-void inorder(TreeNode*root,vector<int>&v){
-    if(root==NULL)return ;
-    inorder(root->left,v);
+void solve(vector<int>&v,TreeNode*root){
+    if(root==NULL)return;
+    solve(v,root->left);
     v.push_back(root->val);
-    inorder(root->right,v);
-
-
+    solve(v,root->right);
 }
     bool isValidBST(TreeNode* root) {
-        // OPTIMIZE usign inorder traversal
         vector<int>v;
-        inorder(root,v);
+        solve(v,root);
         for(int i=0;i<v.size()-1;i++){
-            if(v[i]>=v[i+1])return false;
+            if(v[i]==v[i+1])return false;
         }
-        return true;
-
+        if(is_sorted(v.begin(),v.end())){
+            return true;
+        }
+        return false;
     }
 };
