@@ -11,15 +11,15 @@
  */
 class Solution {
 public:
-void helper(TreeNode*root,vector<int>&v){
-    if(root==NULL)return;
+void solve(vector<int>&v,TreeNode*root){
+    if(root==NULL)return ;
     v.push_back(root->val);
-    helper(root->left,v);
-    helper(root->right,v);
+    solve(v,root->left);
+    solve(v,root->right);
 }
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int>v;
-        helper(root,v);
+        solve(v,root);
         return v;
     }
 };
