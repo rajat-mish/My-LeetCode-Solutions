@@ -1,23 +1,28 @@
 class Solution {
 public:
-
-bool isp(string r){
-    string s=r;
-    reverse(r.begin(),r.end());
-    if(s==r)return true;
+bool isp(const string &s){
+    string str=s;
+    reverse(str.begin(),str.end());
+    if(s==str)return true;
     return false;
 }
-    int countSubstrings(string s) {int count=0;
-        for(int i=0;i<s.size();i++){
-            for(int j=i;j<s.size();j++){
-                string r=s.substr(i,j-i+1);
-                if(isp(r)){
-                    count++;
-                }
-
-            }
-            
+int solve(const string &s,int i,int j){
+    int count=0;
+    if(i>j)return 0;
+   for(int start=i;start<=j;start++){
+    for(int st=start;st<=j;st++){
+        if(isp(s.substr(start,st - start +1))){
+            count++;
         }
-        return count;
+    }
+   }
+   return count;
+}
+    int countSubstrings(string s) {
+        return solve(s,0,s.size()-1);
     }
 };
+
+
+
+
