@@ -16,7 +16,7 @@ int levels(TreeNode*root){
     return 1+max(levels(root->left),levels(root->right));
 }
 void printNth(TreeNode*root,int cur,int n,vector<int>&v){
-  if(root==NULL)return ;
+  if(root==NULL)return;
   if(cur==n){
     v.push_back(root->val);
     return ;
