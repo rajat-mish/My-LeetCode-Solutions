@@ -11,38 +11,73 @@
 class Solution {
 public:
     vector<ListNode*> splitListToParts(ListNode* head, int k) {
-        int n=0;
         ListNode*temp=head;
-        while(temp){
-           
+        ListNode*tm=head;
+        int count=0;
+        vector<ListNode*>v;
+        while(temp!=NULL){
+            count++;
             temp=temp->next;
-             n++;
+            
         }
-        temp=head;
-          vector<ListNode*>ans;
-          int size=n/k;
-          int r=n%k;
-          while(temp){
-                ListNode*c=new ListNode(67);
-                ListNode*t=c;
-                int s=size;
-                if(r>0)s++;
-                r--;
-                for(int i=1;i<=s;i++){
-                    t->next=temp;
-                    temp=temp->next;
-                    t=t->next;
-                }
-                t->next=NULL;
-                ans.push_back(c->next);
-          }
-          if(ans.size()<k){
-              int e=k-ans.size();
-              for(int i=1;i<=e;i++){
-                  ans.push_back(NULL);
-              }
-          }
-          return ans;
 
+        if(count<=k){
+            temp=head;
+            while(temp!=NULL){
+                ListNode*nn=new ListNode(temp->val);
+             
+                v.push_back(nn);
+                temp=temp->next;
+            }
+            if(count<k){
+                int t=k-count;
+                while(t--){
+                    v.push_back(NULL);
+                }
+            }
+            return v;
+        }
+      else{
+        int p=count%k;
+        int q=count/k;
+        temp=head;
+        for(int i=0;i<p;i++){
+           int c=q+1;
+           ListNode*node=new ListNode(NULL);
+           ListNode*tp=node;
+           temp=tm;
+           for(int j=0;j<c;j++){
+            ListNode*nn=new ListNode(temp->val);
+            node->next=nn;
+            node=node->next;
+            temp=temp->next;
+           }
+           tm=temp;
+         v.push_back(tp->next);
+        }
+
+        for(int i=0;i<k-p;i++){
+             int c=q;
+           ListNode*node=new ListNode(NULL);
+           ListNode*tp=node;
+           ListNode*tem=tm;
+           for(int j=0;j<c;j++){
+            ListNode*nn=new ListNode(tem->val);
+            node->next=nn;
+            node=node->next;
+            tem=tem->next;
+           }
+           tm=tem;
+         v.push_back(tp->next);
+        }
+
+
+
+
+      }
+
+
+        
+        return v;
     }
 };
