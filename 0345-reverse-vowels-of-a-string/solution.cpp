@@ -1,31 +1,27 @@
 class Solution {
 public:
     string reverseVowels(string s) {
-        string ans=s;
-        int i=0;
-        int j=s.size()-1;
+        int i=0,j=s.size()-1;
         while(i<j){
-            if((ans[i]=='a'||ans[i]=='e'||ans[i]=='i'||ans[i]=='o'||ans[i]=='u'||ans[i]=='A'||ans[i]=='E'||ans[i]=='I'||ans[i]=='O'||ans[i]=='U')&&(ans[j]=='a'||ans[j]=='e'||ans[j]=='i'||ans[j]=='o'||ans[j]=='u'||ans[j]=='A'||ans[j]=='E'||ans[j]=='I'||ans[j]=='O'||ans[j]=='U')){
-                int t=ans[i];
-                ans[i]=ans[j];
-                ans[j]=t;
- i++;
-                j--;
-               
-            }
-            else if((ans[i]=='a'||ans[i]=='e'||ans[i]=='i'||ans[i]=='o'||ans[i]=='u'||ans[i]=='A'||ans[i]=='E'||ans[i]=='I'||ans[i]=='O'||ans[i]=='U')){
-   j--;
-            }
-            else if((ans[j]=='a'||ans[j]=='e'||ans[j]=='i'||ans[j]=='o'||ans[j]=='u'||ans[j]=='A'||ans[j]=='E'||ans[j]=='I'||ans[j]=='O'||ans[j]=='U')){
-                i++;
-            }
-            else{
-                i++;
-                j--;
-            }
+            if ((s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U' ||
+     s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u') &&
+    (s[j] == 'A' || s[j] == 'E' || s[j] == 'I' || s[j] == 'O' || s[j] == 'U' ||
+     s[j] == 'a' || s[j] == 'e' || s[j] == 'i' || s[j] == 'o' || s[j] == 'u')) {
+    swap(s[i],s[j]);
+    i++;j--;
 
-            
+}
+else if((s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U' ||
+     s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u') &&
+    (s[j] != 'A' || s[j] != 'E' || s[j] != 'I' || s[j] != 'O' || s[j] != 'U' ||
+     s[j] != 'a' || s[j] != 'e' || s[j] != 'i' || s[j] != 'o' || s[j] != 'u')){
+        j--;
+     }
+     else{
+        i++;
+     }
+
         }
-        return ans;
+        return s;
     }
 };
