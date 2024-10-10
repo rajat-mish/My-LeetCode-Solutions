@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxWidthRamp(vector<int>& nums) {
+        int n=nums.size(),ans=0;
+        vector<int>mini(n),maxi(n);
+        mini[0]=nums[0];
+        maxi[n-1]=nums[n-1];
+        for(int i=1;i<n;i++){
+            mini[i]=min(mini[i-1],nums[i]);
+        }
+        for(int i=n-2;i>=0;i--){
+            maxi[i]=max(maxi[i+1],nums[i]);
+        }
+        int i=0,j=0;
+        while(j<n){
+            if(mini[i]<=maxi[j]){
+                ans=max(ans,j-i);
+                j++;
+            }
+            else{
+                i++;
+            }
+        }
+        return ans;
+    }
+};
