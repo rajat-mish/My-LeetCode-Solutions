@@ -1,21 +1,16 @@
 class Solution {
 public:
-// bottom up approach
-vector<int>dp;
-int fun(vector<int>&nums,int i){
-    
-    int n=nums.size();
-    if(n==1)return nums[0];
-    dp.clear();
-    dp.resize(105);
-    dp[n-1]=nums[n-1];
-    dp[n-2]=max(nums[n-1],nums[n-2]);
-    for(int i=n-3;i>=0;i--){
-        dp[i]=max(nums[i]+dp[i+2],dp[i+1]);
-    }
-    return dp[0];
+int fun(int idx,vector<int>&nums,vector<int>&dp){
+    if(idx==0)return  nums[idx];
+    if(idx<0)return 0;
+    if(dp[idx]!=-1)return dp[idx]; 
+    int pick=nums[idx]+fun(idx-2,nums,dp);
+    int npick=0+fun(idx-1,nums,dp);
+    return dp[idx]= max(pick,npick);
 }
     int rob(vector<int>& nums) {
-       return  fun(nums,0);
+        int n=nums.size();
+        vector<int>dp(n,-1);
+       return  fun(n-1,nums,dp);
     }
 };
