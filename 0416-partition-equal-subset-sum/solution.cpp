@@ -1,31 +1,32 @@
 class Solution {
 public:
-vector<vector<int>>dp;
-bool fun(vector<int>&nums,int sum,int i ){
-    if(i==0)return(nums[i]==sum);
-    if(sum==0)return true;
-    if(dp[i][sum]!=-1)return dp[i][sum];
-    bool take=false;
-    bool ntake=fun(nums,sum,i-1);
-    if(nums[i]<=sum){
-        take=fun(nums,sum-nums[i],i-1);
-    }
-    return dp[i][sum]= take||ntake;
-}
+  bool fun(int idx,int sum,int target,vector<int>&arr,vector<vector<int>>&dp){
+       if(sum==target)return true;
+     if(idx==arr.size()||sum>target){
+      
+         return false;
+     }
+   
+   
+        if(dp[idx][sum]!=-1)return dp[idx][sum];
+      int ntake=fun(idx+1,sum,target,arr,dp);
+      int take=false;
+      if(sum+arr[idx] <=target){
+          take=fun(idx+1,sum+arr[idx],target,arr,dp);
+      }
+      return dp[idx][sum]= max(take,ntake);
+      
+  }
     bool canPartition(vector<int>& nums) {
-        int n=nums.size();
-
-        long long sum=0;
-        
-        for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
+        int sum=0;
+        for(auto ele:nums){
+            sum+=ele;
         }
         if(sum%2!=0)return false;
         int target=sum/2;
-        dp.assign(n,vector<int>(target+1,-1));
-        return fun(nums,sum/2,nums.size()-1);
-        
+          int n=nums.size();
+   vector<vector<int>> dp(n, vector<int>(target + 1, -1));
+
+        return fun(0,0,target,nums,dp);
     }
 };
-
-
