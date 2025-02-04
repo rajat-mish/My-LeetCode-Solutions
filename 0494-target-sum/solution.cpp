@@ -1,39 +1,30 @@
 class Solution {
 public:
-// int fun(vector<int>&v,int target,int i){
-//     if(i==0)return (v[i]==target);
-//     if(target==0)return 1;
-//     int ntake=fun(v,target,i-1);
-//     int take=0;
-//     if(target>=v[i]){
-//         take=fun(v,target-v[i],i-1);
-//     }
-//     return take +ntake;
-// }
-int dp[10005][105];
-int fun(vector<int>&v,int target,int i){
-    //if(target==0)return 1;
+int fun(int i,int t,vector<int>&nums,vector<vector<int>>&dp){
     if(i==0){
-        if(target==0 && v[0]==0)return 2;
-        if(target==0 || target==v[0])return 1;
+        if(nums[i]==0 && t==0){
+            return 2;
+        }
+        if(t==0 || nums[i]==t)return 1;
         return 0;
     }
-    if(dp[target][i]!=-1)return dp[target][i];
+    int ntake=fun(i-1,t,nums,dp);
     int take=0;
-    int ntake=fun(v,target,i-1);
-    if(target>=v[i]){
-        take=fun(v,target-v[i],i-1);
+    if(nums[i]<=t){
+        take=fun(i-1,t-nums[i],nums,dp);
     }
-    return dp[target][i]= take + ntake;
+    return take+ntake;
 }
-
     int findTargetSumWays(vector<int>& nums, int target) {
-        int sum=0;
-        for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
+        int n=nums.size(),sum=0;
+        for(auto ele:nums){
+            sum+=ele;
         }
-          memset(dp,-1,sizeof dp);
-          if((target +sum)%2!=0)return 0;
-        return fun(nums,(target +sum)/2,nums.size()-1);
+       
+        int t=(sum+target)/2;
+      
+        if(sum+target<0 || (sum+target)%2)return 0;
+           vector<vector<int>>dp(n,vector<int>(t+1,-1));
+        return fun(n-1,t,nums,dp);
     }
 };
