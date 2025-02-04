@@ -1,35 +1,25 @@
 class Solution {
 public:
-vector<int>dp;
- vector<int>v;
-int fun(int x){
-    if(x==0)return 0;
-   
-    if(dp[x]!=-1)return dp[x];
-    
-    if(dp[x]==INT_MAX){
-        
+int fun(int i,int target,vector<int>&coins,vector<vector<int>>&dp){
+    if(i==0){
+        if(target%coins[i]==0){
+            return target/coins[i];
+        }
+        return 1e9;
     }
- 
-     
- 
-    int res=INT_MAX;
-    for(int i=0;i<v.size();i++){
-        if((x-v[i])<0)continue;
-        res= min(res,fun((x-v[i])));
+    if(dp[i][target]!=-1)return dp[i][target];
+    int ntake=fun(i-1,target,coins,dp);
+    int take=INT_MAX;
+    if(coins[i]<=target){
+        take=1+fun(i,target-coins[i],coins,dp);
     }
-    
-    if(res==INT_MAX)return dp[x]=INT_MAX;  // res not updated means we are unable to make pattern
-    return dp[x]= 1+res;
- 
+    return dp[i][target]=min(take,ntake);
 }
-
-    int coinChange(vector<int>& coins, int x) {
-        v=coins;
-         dp.clear();
-    dp.resize(1000006,-1);
-  int ans=fun(x);
-  if(ans==INT_MAX)return -1;
- return ans;
+    int coinChange(vector<int>& coins, int amount) {
+        int n=coins.size();
+        vector<vector<int>>dp(n,vector<int>(amount+1,-1));
+    int ans= fun(n-1,amount,coins,dp);
+    if(ans>=1e9)return -1;
+    return ans;
     }
 };
