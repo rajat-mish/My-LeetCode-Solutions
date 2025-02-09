@@ -1,26 +1,21 @@
 class Solution {
 public:
-    long long dp[100005][3][2];  
-    
-    long long fun(vector<int>& prices, int i, int k, bool on) {
-        if (i >= prices.size()) return 0;  
-        if (k == 0) return 0;  
-        if (dp[i][k][on] != -1) return dp[i][k][on];
-        
-        long long ans = fun(prices, i + 1, k, on);  
-        
-        if (on) {
-            ans = max(ans, prices[i] + fun(prices, i + 1, k - 1, false));
-        } else {
-            ans = max(ans, fun(prices, i + 1, k, true) - prices[i]);
-        }
-        
-        return dp[i][k][on] = ans;
+int fun(int i,int buy,int rem,vector<int>&prices,vector<vector<vector<int>>>&dp){
+    if(i>=prices.size()||rem==0)return 0;
+    if(dp[i][buy][rem]!=-1)return dp[i][buy][rem];
+    int profit=0;
+    if(buy){
+        profit=max(-prices[i]+fun(i+1,0,rem,prices,dp),fun(i+1,1,rem,prices,dp));
     }
-
+    else{
+        profit=max(prices[i]+fun(i+1,1,rem-1,prices,dp),fun(i+1,0,rem,prices,dp));
+    }
+    return dp[i][buy][rem]=profit;
+}
     int maxProfit(vector<int>& prices) {
-        memset(dp, -1, sizeof dp);
-        return fun(prices, 0, 2, false);
+    //    vector<vector<vector<int>>>dp(prices.size(),vector<vector<int>>(2,vector<int>(2,-1)));
+    vector<vector<vector<int>>> dp(prices.size(), vector<vector<int>>(2, vector<int>(3, -1)));
+
+       return fun(0,1,2,prices,dp); 
     }
 };
-
