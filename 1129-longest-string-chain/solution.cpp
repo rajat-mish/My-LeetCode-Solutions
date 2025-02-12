@@ -1,6 +1,6 @@
 class Solution {
 public:
-bool compare(string &s1,string &s2){
+bool comp(string &s1,string &s2){
     if(s1.size()!=s2.size()+1){
         return false;
     }
@@ -20,71 +20,22 @@ bool compare(string &s1,string &s2){
 static bool cmp(string &s1,string &s2){
     return s1.size()<s2.size();
 }
-int fun(vector<string>&v,int i,int pre,vector<vector<int>>&dp){
-     if(i==v.size())return 0;
-     
-     if(dp[i][pre+1]!=-1)return dp[i][pre+1];
-    int len=fun(v,i+1,pre,dp);
+int fun(int i,int prev,vector<string>&words,vector<vector<int>>&dp){
+    if(i==words.size())return 0;
+    if(dp[i][prev+1]!=-1)return dp[i][prev+1];
+    int take=fun(i+1,prev,words,dp);
+
    
-    if(pre==-1||compare(v[i],v[pre])){
-       
-        len=max(len,1+fun(v,i+1,i,dp));
+    if(prev==-1 || comp(words[i],words[prev])==true){
+        take=max(take,1+fun(i+1,i,words,dp));
     }
-   
-    return dp[i][pre+1]= len;
-   
+    return dp[i][prev+1]= take;
+
 }
     int longestStrChain(vector<string>& words) {
-                int n=words.size();
-                sort(words.begin(),words.end(),cmp);
-        vector<vector<int>>dp(n+1,vector<int>(n,-1));
-        return fun(words,0,-1,dp);
+        sort(words.begin(),words.end(),cmp);
+        int n=words.size();
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        return fun(0,-1,words,dp);
     }
 };
-
-
-
-
-
-// class Solution {
-// public:
-//     bool compare(string &s1, string &s2) {
-//         if (s1.size() != s2.size() + 1) {
-//             return false;
-//         }
-//         int i = 0, j = 0;
-//         while (i < s1.size() && j < s2.size()) {
-//             if (s1[i] == s2[j]) {
-//                 i++; j++;
-//             } else {
-//                 i++;
-//             }
-//         }
-//         return j == s2.size();
-//     }
-
-//     bool cmp(string &s1, string &s2) {
-//         return s1.size() < s2.size();
-//     }
-
-//     int fun(vector<string>& v, int i, int pre, vector<vector<int>>& dp) {
-//         if (i == v.size()) return 0;
-
-//         if (dp[i][pre + 1] != -1) return dp[i][pre + 1];
-//         int len = fun(v, i + 1, pre, dp);
-
-//         if (pre == -1 || compare(v[i], v[pre])) {
-//             len = max(len, 1 + fun(v, i + 1, i, dp));
-//         }
-
-//         return dp[i][pre + 1] = len;
-//     }
-
-//     int longestStrChain(vector<string>& words) {
-//         int n = words.size();
-//         sort(words.begin(), words.end(), cmp);
-//         vector<vector<int>> dp(n, vector<int>(n + 1, -1));
-//         return fun(words, 0, -1, dp);
-//     }
-// };
-
