@@ -11,11 +11,11 @@
  */
 class Solution {
 public:
-int solve(TreeNode*root){
+int levels(TreeNode*root){
     if(root==NULL)return 0;
-    return max(solve(root->left),solve(root->right))+1;
+    return 1+max(levels(root->left),levels(root->right));
 }
     int maxDepth(TreeNode* root) {
-        return solve(root);
+        return levels(root);
     }
 };
