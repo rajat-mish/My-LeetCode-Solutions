@@ -1,34 +1,24 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
-        int m=matrix.size();
-        int n=matrix[0].size();
-
-        vector<bool>rows(m,false);
-        vector<bool>cols(n,false);
-
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(matrix[i][j]==0){
-                    rows[i]=true;
-                    cols[j]=true;
-                }
+     int n=matrix.size();
+     int m=matrix[0].size();
+        queue<pair<int,int>>q;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==0)q.push({i,j});
             }
         }
-
-        for(int j=0;j<n;j++){
-            if(cols[j]==true){
-                for(int i=0;i<m;i++){
-                    matrix[i][j]=0;
-                }
+        while(!q.empty()){
+            int row=q.front().first;
+            int col=q.front().second;
+            q.pop();
+            for(int i=0;i<n;i++){
+              
+                matrix[i][col]=0;
             }
-        }
-
-        for(int i=0;i<m;i++){
-            if(rows[i]==true){
-                for(int j=0;j<n;j++){
-                    matrix[i][j]=0;
-                }
+            for(int j=0;j<m;j++){
+                  matrix[row][j]=0;
             }
         }
     }
