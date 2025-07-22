@@ -1,26 +1,22 @@
-bool cmp(vector<int>&a,vector<int>&b){
-    return a[1]<b[1];
-}
-
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end(),cmp);
-        vector<vector<int>>result;
-        int n=intervals.size();
-        result.push_back(intervals[n-1]);
-
-        for(int i=n-2;i>=0;i--){
-            vector<int>curr=intervals[i];
-            if(curr[1]>=result[result.size()-1][0]){
-                // its means overlapping , so merge it
-                result[result.size()-1][0]=min(curr[0],result[result.size()-1][0]);
-                result[result.size()-1][1]=max(curr[1],result[result.size()-1][1]);
+        vector<vector<int>>ans;
+      sort(intervals.begin(),intervals.end());
+        int start=intervals[0][0];
+        int end=intervals[0][1];
+        for(int i=1;i<intervals.size();i++){
+            if(end>=intervals[i][0]){
+                end=max(end,intervals[i][1]);
             }
             else{
-                result.push_back(intervals[i]);
+                ans.push_back({start,end});
+                start=intervals[i][0];
+               end=max(end,intervals[i][1]);
             }
         }
-        return result;
+         ans.push_back({start,end});
+
+        return ans;
     }
 };
