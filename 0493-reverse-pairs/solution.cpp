@@ -1,59 +1,56 @@
 class Solution {
 public:
-int ans=0;
-void merge(vector<int>&a,int l,int m,int h){
-    int i=l;
-    int j=m+1;
+int count=0;
+void merge(vector<int>&arr,int left,int mid,int right){
 
-    while(i<=m && j<=h){
-        if((long long )a[i]>(long long)2*a[j]){
-            ans+=m-i+1;
-            j++;
+
+ int j=mid+1;
+ for(int i=left;i<=mid;i++){
+    while(j<=right && (long long)arr[i]>2LL*arr[j])j++;
+    count+=(j-(mid+1));
+ }
+
+
+    int n1=mid-left+1;
+    int n2=right-mid;
+
+    vector<int>L(n1);
+    vector<int>R(n2);
+
+    for(int i=0;i<n1;i++){
+       L[i]= arr[left+i];
+    }
+    for(int i=0;i<n2;i++){
+        R[i]=arr[mid+1+i];
+    }
+    int k=left;
+    int i=0;j=0;
+    while(i<n1 && j<n2){
+        if(L[i]<=R[j]){
+            arr[k]=L[i++];
+
         }
         else{
-            i++;
+            arr[k]=R[j++];
         }
+        k++;
     }
-
-    vector<int>b;
-    i=l; j=m+1;
-    while(i<=m && j<=h){
-        if(a[i]>a[j]){
-            b.push_back(a[j++]);
-        }
-        else{
-            b.push_back(a[i++]);
-        }
+    while(i<n1){
+        arr[k++]=L[i++];
     }
-    while(i<=m){
-         b.push_back(a[i++]);
-    }
-
-    while(j<=h){
-         b.push_back(a[j++]);
-    }
-
-    for(int i=l;i<=h;i++){
-        a[i]=b[i-l];
-    }
-
-
+    while(j<n2)arr[k++]=R[j++];
 }
 
-void mergeS(vector<int>&a, int l, int h)
-{ if(l==h)return;
-    int mid;
-    if (l < h)
-    {
-       // mid = floor((l + (h)) / 2);
-       int mid=(l+h)/2;
-        mergeS(a, l, mid);
-        mergeS(a, mid + 1, h);
-        merge(a, l, mid, h);
-    }
+void merges(vector<int>&nums,int i,int j){
+    if(i>=j)return;
+
+    int mid=(i+j)/2;
+    merges(nums,i,mid);
+    merges(nums,mid+1,j);
+    merge(nums,i,mid,j);
 }
     int reversePairs(vector<int>& nums) {
-       mergeS(nums,0,nums.size()-1);
-       return ans;
+        merges(nums,0,nums.size()-1);
+        return count;
     }
 };
