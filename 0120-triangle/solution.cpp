@@ -1,32 +1,17 @@
 class Solution {
 public:
-int fun(int i,int j,vector<vector<int>>&arr,vector<vector<int>>&dp){
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<int> dp(triangle[n-1]); // initialize with bottom row
 
-     if(dp[i][j]!=-1)return dp[i][j];
-       int n=arr.size();
-        int m=arr[0].size();
-         if(i==n-1)return arr[i][j];
+        // Bottom-up calculation
+        for (int i = n - 2; i >= 0; --i) {
+            for (int j = 0; j <= i; ++j) {
+                dp[j] = triangle[i][j] + min(dp[j], dp[j + 1]);
+            }
+        }
 
-    //   if(i<0 || i>=n|| j<0 || j>=m)return 1e9; 
-   
-      
-   
-
-   
-    int mini=INT_MAX;
-
- 
-
-
-      return dp[i][j]=arr[i][j]+min({fun(i+1,j,arr,dp),fun(i+1,j+1,arr,dp)});
-    
-
-}
-    int minimumTotal(vector<vector<int>>& arr) {
-        int n=arr.size();
-        int m=arr.size();
-        vector<vector<int>>dp(n,vector<int>(m,-1));
-     
-        return fun(0,0,arr,dp);
+        return dp[0]; // result is stored at the top
     }
 };
+
