@@ -1,28 +1,31 @@
 class Solution {
 public:
-    int ladderLength(string startWord, string targetWord, vector<string>& wordList) {
-           queue<pair<string,int>>q;
-        q.push({startWord,1});
-        unordered_set<string>st(wordList.begin(),wordList.end());
-        st.erase(startWord);
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_map<string,int>mp;
+        set<string>vis;
+        for(auto ele:wordList)mp[ele]++;
+        if(mp.find(endWord)==mp.end())return 0;
+     
+        queue<pair<int,string>>q;
+        int ans=0;
+        q.push({0,beginWord});
+        vis.insert(beginWord);
         while(!q.empty()){
-            string word=q.front().first;
-            int steps=q.front().second;
+            int count=q.front().first;
+            string temp=q.front().second;
             q.pop();
-            if(word==targetWord)return steps;
-            
-            for(int i=0;i<word.size();i++){
-                char original=word[i];
-                for(char ch='a' ;ch<='z' ; ch++){
-                    word[i]=ch;
-                    if(st.find(word)!=st.end()){
-                        st.erase(word);
-                        q.push({word,steps+1});
-                    }
+            if(temp==endWord)return count+1;
+          
+          for(int i=0;i<temp.size();i++){
+            string tp=temp;
+              for(char ch='a';ch<='z';ch++){
+                tp[i]=ch;
+                if(mp.find(tp)!=mp.end() && vis.find(tp)==vis.end()){
+                    vis.insert(tp);
+                    q.push({count+1,tp});
                 }
-                word[i]=original;
-                
             }
+          }
         }
         return 0;
     }
