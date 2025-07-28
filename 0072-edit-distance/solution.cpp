@@ -1,23 +1,31 @@
 class Solution {
 public:
- int fun(string s1,string s2,int i,int j,vector<vector<int>>&dp){
-    if(j<0)return i+1;
-    if(i<0)return j+1;
-    if(dp[i][j]!=-1)return dp[i][j];
-
-    if(s1[i]==s2[j]){
-        return dp[i][j]= fun(s1,s2,i-1,j-1,dp);
+vector<vector<int>>dp;
+int fun(int i,int j,string &word1,string &word2){
+    // if(i<0 || j<0)return 0;
+    if(i==0 && j==0){
+        if(word1[i]==word2[j])return 0;
+        return 1;
     }
-    
-        return dp[i][j]=1+ min((fun(s1,s2,i-1,j-1,dp)),min((fun(s1,s2,i,j-1,dp)),(fun(s1,s2,i-1,j,dp))));
-    
- }
+    if(i<0 && j>=0)return j+1;
+    if(i>=0 && j<0)return i+1;
+     if(dp[i][j]!=-1)return dp[i][j];
+    int ans=INT_MAX;
+    if(word1[i]==word2[j]){
+        ans=min(ans,fun(i-1,j-1,word1,word2));
+    }
+    else{
+        ans=1+min({ans,fun(i-1,j,word1,word2),fun(i,j-1,word1,word2),fun(i-1,j-1,word1,word2)});
+    }
+    return dp[i][j]= ans;
+}
     int minDistance(string word1, string word2) {
         int n=word1.size();
         int m=word2.size();
-        int i=n,j=m;
-        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
-        return fun(word1,word2,i,j,dp);
-
+        if(word1==word2)return 0;
+        if(m==0)return n;
+        if(n==0)return m;
+        dp.resize(n+1,vector<int>(m+1,-1));
+        return fun(n-1,m-1,word1,word2);
     }
 };
