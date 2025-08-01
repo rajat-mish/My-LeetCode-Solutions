@@ -1,38 +1,45 @@
 class Solution {
 public:
-bool dfs(int start,vector<int>&vis,vector<int>&check,vector<int>&path,vector<vector<int>>&adj){
-    vis[start]=1;
-    path[start]=1;
-    for(auto ele:adj[start]){
-        if(!vis[ele]){
-            if(dfs(ele,vis,check,path,adj)==true)return true;
-        }
-        else if(path[ele])return true;
-    }
-    check[start]=1;
-    path[start]=0;
-    return false;
-
-}
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int V=graph.size();
-        vector<vector<int>>adj(V);
-   for(int i=0;i<V;i++){
-    for(int j=0;j<graph[i].size();j++){
-        adj[i].push_back(graph[i][j]);
+        vector<int>adj[V];
+     for (int i = 0; i < V; i++) {
+    for (int j : graph[i]) {
+        adj[j].push_back(i);  
     }
-   }
-        vector<int>vis(V,0),check(V,0),path(V,0),ans;
-        for(int i=0;i<V;i++){
-            if(!vis[i]){
-                dfs(i,vis,check,path,adj);
-            }
+}
+
+/// graph ko reverse kro and topo order find kro!!!!!!!!!!!!!!!
+
+
+         
+        vector<int>indegree(V,0);
+            for(int i=0;i<V;i++){
+                      for(auto ele:adj[i]){
+            indegree[ele]++;
         }
-        for(int i=0;i<V;i++){
-            if(check[i]==1){
-                ans.push_back(i);
             }
-        }
-        return ans;
+            
+            queue<int>q;
+            vector<int>topo;
+            for(int i=0;i<V;i++){
+                if(indegree[i]==0){
+                    q.push(i);
+                }
+            }
+            while(!q.empty()){
+                int node=q.front();
+                q.pop();
+                topo.push_back(node);
+                for(auto ele:adj[node]){
+                    indegree[ele]--;
+                    if(indegree[ele]==0){
+                        q.push(ele);
+                    }
+                }
+                
+            }
+            sort(topo.begin(),topo.end());
+            return topo;
     }
 };
