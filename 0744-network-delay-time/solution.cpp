@@ -3,35 +3,29 @@ public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
         vector<pair<int,int>>adj[n+1];
         for(auto ele:times){
-            adj[ele[0]].push_back({ele[1],ele[2]});
+            adj[ele[0]].push_back({ele[2],ele[1]}); // weight,dest
+
         }
-    queue<pair<int,int>>q;
-    q.push({k,0});
-    vector<int>dist(n+1,1e9);
-    dist[k]=0;
-    while(!q.empty()){
-        int node=q.front().first;
-        int cost=q.front().second;
-    q.pop();
-    for(auto ele:adj[node]){
-        if(dist[ele.first]>(cost+ele.second)){
-            dist[ele.first]=cost+ele.second;
-            q.push({ele.first,cost+ele.second});
+        vector<int>dist(n+1,INT_MAX);
+        dist[k]=0;
+        queue<pair<int,int>>q; // node weight
+        q.push({k,0});
+        while(!q.empty()){
+            int node=q.front().first;
+            int time=q.front().second;
+            q.pop();
+            for(auto ele:adj[node]){
+                if(ele.first+time<dist[ele.second]){
+                    dist[ele.second]=time+ele.first;
+                    q.push({ele.second,ele.first+time});
+                }
+            }
         }
-    }
-    }
-    int mxtime=0;
-    for(int i=1;i<=n;i++){
-        if(dist[i]==1e9)return -1;
-        mxtime=max(mxtime,dist[i]);
-    }
-   return mxtime;
+        int maxi=INT_MIN;
+        for(int i=1;i<dist.size();i++){
+            if(dist[i]==INT_MAX)return -1;
+            maxi=max(maxi,dist[i]);
+        }
+       return maxi;
     }
 };
-
-
-
-
-
-
-
