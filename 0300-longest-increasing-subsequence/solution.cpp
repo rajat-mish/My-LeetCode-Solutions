@@ -1,19 +1,20 @@
 class Solution {
 public:
-vector<vector<int>>dp;
-int fun(int i,int prev,vector<int>&nums){
-    if(i>=nums.size())return 0;
-    if(dp[i][prev+1]!=-1)return dp[i][prev+1];
-    int len=fun(i+1,prev,nums);
-
-    if (prev==-1 || nums[i]>nums[prev]){
-        len=max(len,1+fun(i+1,i,nums));
-    }
-    return dp[i][prev+1]= len;
-}
+// using Binary Search
     int lengthOfLIS(vector<int>& nums) {
-        int n=nums.size();
-        dp.resize(n+1,vector<int>(n+1,-1));
-        return fun(0,-1,nums);
+        vector<int>temp;
+        int len=1;
+        temp.push_back(nums[0]);
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]>temp.back()){
+                len++;
+                temp.push_back(nums[i]);
+            }
+            else{
+                int idx=lower_bound(temp.begin(),temp.end(),nums[i])-temp.begin();
+                temp[idx]=nums[i];
+            }
+        }
+        return len;
     }
 };
