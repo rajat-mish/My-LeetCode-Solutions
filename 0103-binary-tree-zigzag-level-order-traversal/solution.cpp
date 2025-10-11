@@ -11,39 +11,47 @@
  */
 class Solution {
 public:
-int levels(TreeNode*root){
-    if(root==NULL)return 0;
-    return 1+max(levels(root->left),levels(root->right));
-}
-void printNthlev(TreeNode*root,int cur,int n,vector<int>&v){
-    if(root==NULL)return ;
-    if(cur==n){
-       v.push_back(root->val);
-       return;
-    }
-    if(n%2==0){
-         printNthlev(root->right,cur+1,n,v);
-         printNthlev(root->left,cur+1,n,v);
-   
-    }
-    else{
-    printNthlev(root->left,cur+1,n,v);
-    printNthlev(root->right,cur+1,n,v);}
-    
-}
-void levOrder(TreeNode*root, vector<vector<int>>&ans){
-   
-    int n=levels(root);
-    for(int i=1;i<=n;i++){
-         vector<int>v;
-         printNthlev(root,1,i,v);
-         ans.push_back(v);
-       
-    }
-}
+
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-         vector<vector<int>>ans;
-         levOrder(root,ans);
-         return ans;
+        queue<TreeNode*>q;
+        vector<vector<int>>ans;
+        if(!root)return ans;
+        bool lefttoright=true;
+
+        q.push(root);
+        //int n=fun(root);
+  
+     
+
+        while(!q.empty()){
+            int sz=q.size();
+            vector<int>v;
+            for(int i=0;i<sz;i++){
+                TreeNode*node=q.front();
+             
+            q.pop();
+
+          
+            //    TreeNode*node=q.front();
+            //     q.pop();
+                v.push_back(node->val);
+
+             
+               
+                  if(node->left) q.push(node->left);
+                   if(node->right)q.push(node->right);
+            
+      
+
+
+            }
+            if(!lefttoright)reverse(v.begin(),v.end());
+            ans.push_back(v);
+            lefttoright=!lefttoright;
+         
+
+        }
+        return ans;
+        
     }
 };
