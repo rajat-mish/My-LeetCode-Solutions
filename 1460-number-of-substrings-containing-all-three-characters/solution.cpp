@@ -1,22 +1,27 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        unordered_map<char, int> mp;
-        int i = 0, j = 0, n = s.size(), count = 0;
+        int ans=0,start=0;
+        int n=s.size();
+        int j=0;
+        unordered_map<int,int>mp;
+        while(j<n){
+            mp[s[j]]++;
 
-        while (j < n) {
-            mp[s[j]]++;  // Expand the window
-
-            while (mp.size() == 3) {  // Valid window with 'a', 'b', 'c'
-                count += (n - j);  // All substrings from i to n-1 are valid
-                mp[s[i]]--;  // Shrink the window from the left
-                if (mp[s[i]] == 0) 
-                    mp.erase(s[i]);  // Remove character if count becomes zero
-                i++;
+            if(mp.size()==3){
+               
+                while(mp.size()==3){
+                    ans+=n-j; // start se lekar n-1 tak sab kuch kaam me aa jayega
+                  mp[s[start]]--;
+                  if(mp[s[start]]==0)mp.erase(s[start]);
+                 
+                  start++;
+                }
             }
+         
             j++;
+
         }
-        return count;
+        return ans;
     }
 };
-
