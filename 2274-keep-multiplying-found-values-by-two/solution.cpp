@@ -1,12 +1,13 @@
 class Solution {
 public:
-    int findFinalValue(vector<int>& nums, int original) {
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<nums.size();i++){
-            if(nums[i]==original){
-                original*=2;
-            }
+    int findFinalValue(vector<int>& nums, int ori) {
+        unordered_map<int,int>mp;
+        for(auto ele:nums){
+            mp[ele]++;
         }
-        return original;
+        while(mp.find(ori)!=mp.end()){
+            ori=ori*2;
+        }
+        return ori;
     }
 };
