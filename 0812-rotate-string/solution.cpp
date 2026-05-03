@@ -1,5 +1,7 @@
 class Solution {
 public:
+
+// KMP
 void lpsfind(vector<int>&lps,string s){
     int pre=0,suf=1;
     while(suf<s.size()){
