@@ -10,48 +10,28 @@
  */
 class Solution {
 public:
-ListNode *middle(ListNode *head){
-ListNode *fast = head->next;
-ListNode *slow = head;
-while(fast and fast->next){
-fast = fast->next->next;
-slow = slow->next;
-}
-return slow;
-}
-  ListNode* reverseList(ListNode* head) {
-         ListNode*cur=head;
-          ListNode*nex=NULL;
-           ListNode*pre=NULL;
-//use three pointers
-          
-          while(cur){
-             nex=cur->next;
-             cur->next=pre;
-             pre=cur;
-             cur=nex;
-           
-
-          }
-          return pre;
-
-    }
     int pairSum(ListNode* head) {
-    
-       ListNode*m=middle(head);
-        ListNode*temp=reverseList(m);
-       m->next=NULL;
-        ListNode*t=head;
-        int sum=INT_MIN;
-        while(t&& temp){
-        if(t->val+temp->val>sum){
-            sum=t->val+temp->val;
-        }
-        t=t->next;
-        temp=temp->next;
-        }
+        stack<int>st;
+        int sz=0;
+        ListNode*temp=head;
+        while(temp){
+            sz++;
+            temp=temp->next;
 
-       
-        return sum;
+        }
+        int hf=sz/2;
+        temp=head;
+        while(hf--){
+            st.push(temp->val);
+            temp=temp->next;
+        }
+        int ans=INT_MIN;
+        while(!st.empty() && temp!=NULL){
+            int val=st.top()+temp->val;
+            st.pop();
+            temp=temp->next;
+            ans=max(ans,val);
+        }
+        return ans;
     }
 };
