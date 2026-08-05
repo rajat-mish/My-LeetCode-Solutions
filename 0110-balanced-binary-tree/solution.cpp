@@ -11,23 +11,29 @@
  */
 class Solution {
 public:
-int lev(TreeNode*root){
-    if(root==NULL)return 0;
-    return 1+max(lev(root->left),lev(root->right));
-}
-bool fun(TreeNode*root){
-      int n=0,m=0;
-        if(root==NULL)return true;
-       
-      
-        if(root->left) n=lev(root->left);
-        if(root->right) m=lev(root->right);
-        if(abs(n-m)>1)return false;
-        
-       return fun(root->left)&& fun(root->right);
-       
+pair<bool,int>fun(TreeNode*root){
+    if(root==NULL){
+        return {true,0};
+    }
+
+    pair<bool,int>leftans=fun(root->left);
+    pair<bool,int>rightans=fun(root->right);
+
+    bool op1=leftans.first;
+    bool op2=rightans.first;
+    bool op3=abs(leftans.second-rightans.second)<=1;
+
+pair<bool,int>ans;
+    if(op1 && op2 && op3)ans.first=true;
+    else ans.first=false;
+    
+    ans.second=max(leftans.second,rightans.second)+1;
+    return ans;
 }
     bool isBalanced(TreeNode* root) {
-        return fun(root);
+        // first value of pair representing the balanced and second (int) value representing the height , and this solution works in O(N)
+        // if we write seperate function for caculating the height then the total time complexity will be O(N^2) 
+        pair<bool,int>p=fun(root);
+        return p.first;
     }
 };
