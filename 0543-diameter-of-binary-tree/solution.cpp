@@ -11,24 +11,27 @@
  */
 class Solution {
 public:
-int ans=INT_MIN;
-int lev(TreeNode*root){
-    if(root==NULL)return 0;
-    return 1+max(lev(root->left),lev(root->right));
-}
+pair<int,int>fun(TreeNode*root){
+    if(root==NULL){
+        return {0,0};
+    }
+    pair<int,int>left=fun(root->left);
+    pair<int,int>right=fun(root->right);
 
-void fun(TreeNode*root){
-        if(root==NULL)return;
-        int n=lev(root->left);
-        int m=lev(root->right);
-        ans=max(ans,m+n);
-        fun(root->left);
-        fun(root->right);
-}
+    int op1=left.first;
+    int op2=right.first;
+    int op3=left.second+right.second+1;
 
+    pair<int,int>ans;
+    ans.first=max(op1,max(op2,op3));
+    ans.second=max(left.second,right.second)+1;
+    return ans;
+}
     int diameterOfBinaryTree(TreeNode* root) {
-           fun(root);
-           return ans;
-        
+
+        // in pair-> 1st is for diameter and second is for height
+        //if we make a seperate function for calculating height then it will take overall O(N^2) time complexity , in this code the time complexity is O(N) we are iterating every node only one time
+        pair<int,int>ans=fun(root);
+        return ans.first-1;
     }
 };
