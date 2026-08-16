@@ -1,0 +1,12 @@
+class Solution {
+public:
+    bool stoneGameIX(vector<int>& stones) {
+        vector<int>count(3,0);
+        for(auto ele:stones)count[ele%3]++;
+
+        if(count[0]%2==0){
+            return count[1]>0 && count[2]>0;
+        }
+        return abs(count[1]-count[2])>2;
+    }
+};
