@@ -60,6 +60,7 @@ public:
             else if(cnt==16){
                 //cout<<"yes"<<endl;
                 ans=5+3.6*1e15;
+                
                   ans+=(1e14-1e12)*4;
                   ans+=(1e12-1e9)*3;
                 ans+=(1e9-1e6)*2;
